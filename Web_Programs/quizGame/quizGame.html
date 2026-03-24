@@ -1,0 +1,215 @@
+<!-- Day 1: 08/09/2026 HTML, CSS, Javascript -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-size;
+        }
+        body{
+            background: #f5efe6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+            font-family: sans-serif;
+        }
+        .container{
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            position: relative;
+        }
+        /* ------------------------------SCREENS--------------------------------------------------- */
+        .screen{
+            display: none;
+            padding: 2rem;
+            text-align: center;
+        }
+        .screen.active{
+            display: block;
+
+        }
+        /* -------------------------------------START SCREEN------------------------------------ */
+        #start-screen h1{
+            Color : #E86A33;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        #start-screen p{
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        .quiz-header{
+            margin-bottom: 2rem;
+        }
+        #question-text{
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        .quiz_info{
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .answers-container{
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 25px;
+        }
+        .answer-button{
+            background-color: #f8f0e5;
+            color: #333;
+            border: 2px solid #eadbc8;
+            border-radius: 10px;
+            padding: 1rem;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+        .answer-button:hover{
+            background-color: #eadbc8;
+            border-color: #a3f0c4;
+            
+        }
+        .answer-button.correct{
+            background-color: #e6fff0;
+            border-color: #a3f0c4;
+            color: #28a745;
+        }
+        .answer-button.incorrect{
+            background-color: #fff0f0;
+            border-color: #ffbdbd;
+            color: #dc3545;
+        }
+        .progress-bar{
+            height: 10px;
+            background-color: #f8f0e5;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        .progress{
+            height: 100%;
+            background-color: #e86a33;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        /* --------------------------------------------------Results Screen ----------------------------------- */
+        #result-info{
+            background-color: #f8f0e5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .result-info p{
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        #result-message{
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #e86a33;
+        }
+        button{
+            background-color: #e86a33;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover{
+            background-color: #d45b28;
+        }
+        /* -----------------------------------------------------RESPONSIVE DESIGN----------------------------------- */
+        @media (max-width: 500px){
+            .screen {
+                padding: 1rem;
+            }
+            #start-screen h1{
+                font-size: 2rem;
+            }
+            #question-text{
+                font-size: 1.3rem;
+            }
+            .answer-btn{
+                padding: 12px
+            }
+            button{
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+        }
+
+
+    </style>
+ </head>
+ <body>
+    <div class="container">
+        <div class="screen active" id="start-screen">
+            <h1>Quiz Time</h1>
+            <p>Test your knowledge with these fun questions</p>
+            <button id="start-button">Start Quiz</button>
+
+        </div>
+
+        <div class="screen" id="quiz-screen">
+            <div class="quiz-header">
+                <h2 id="question-text">Question goes here</h2>
+                <div class="quiz_info">
+                    <p>
+                        Question <span id="curent-question">1</span> of <span>5</span>
+                    </p>
+
+                    <p>
+                        Score: <span id="score">0</span></p>
+                </div>
+
+            </div>
+
+            <div id="answers-container" class="answers-container">
+                <!-- Answer buttons will be inserted here from our Javascript code -->
+                
+            </div>
+
+            <div id="progress">
+                <div id="progress" class="progress"></div>
+            </div>
+
+        </div>
+
+        <div id="result_screen" class="screen">
+            <h1>Quiz Results</h1>
+            <div class="result-info">
+                <p>You scored <span id="final-score">0</span>out of <span id="max-score">5</span></p>
+                <div id="result-message">Good job</div>
+
+            </div>
+            <button id="restart-button">Restart Quiz</button>
+
+        </div>
+
+    </div>
+   <script>
+        //43:50
+   </script> 
+ </body>
+ </html>
