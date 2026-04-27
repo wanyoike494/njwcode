@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Edwin Wanyoike Architect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-orange: #D4A574;
+            --secondary-orange: #C9A87C;
+            --sunset-pink: #E8B4B8;
+            --earth-brown: #8B6F47;
+            --dark-brown: #6B5B4F;
+            --dark-bg: #1a1a1a;
+            --darker-bg: #0f0f0f;
+            --card-bg: #2d2d2d;
+            --light-cream: #F5F5DC;
+            --text-light: #f0f0f0;
+            --text-gray: #b0b0b0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* Navigation (Identical to Home Page) */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 5%;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary-orange);
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-orange);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .nav-links a.active { color: var(--primary-orange); }
+        .nav-links a.active::after { width: 100%; }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-orange), var(--sunset-pink));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover { color: var(--primary-orange); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .mobile-menu {
+            display: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--primary-orange);
+            z-index: 1001;
+        }
+
+        /* Projects Hero */
+        .projects-hero {
+            padding: 140px 5% 60px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .projects-hero::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1000px;
+            height: 1000px;
+            background: radial-gradient(circle, rgba(212, 165, 116, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .projects-hero h1 {
+            font-size: 4rem;
+            color: var(--primary-orange);
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .projects-hero p {
+            color: var(--text-gray);
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Filter Buttons */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 30px 5%;
+            background: var(--darker-bg);
+            position: sticky;
+            top: 80px;
+            z-index: 999;
+            border-bottom: 1px solid rgba(212, 165, 116, 0.2);
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            background: transparent;
+            border: 2px solid var(--primary-orange);
+            color: var(--primary-orange);
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary-orange);
+            color: var(--dark-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 165, 116, 0.3);
+        }
+
+        /* Gallery Grid */
+        .gallery-section {
+            padding: 40px 5% 80px;
+            background: var(--darker-bg);
+            min-height: 100vh;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--card-bg);
+            border: 2px solid transparent;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .gallery-item.hidden {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            position: absolute;
+            visibility: hidden;
+        }
+
+        .gallery-item:hover {
+            border-color: var(--primary-orange);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(212, 165, 116, 0.15);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            display: block;
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.05);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(15, 15, 15, 0.95) 0%, transparent 60%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 25px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-type {
+            color: var(--sunset-pink);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .gallery-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-light);
+        }
+
+        .gallery-date {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+        }
+
+        .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: var(--primary-orange);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--dark-bg);
+            opacity: 0.9;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover .play-icon {
+            transform: translate(-50%, -50%) scale(1.1);
+            opacity: 1;
+        }
+
+        /* Lightbox/Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 15, 15, 0.98);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            flex-direction: column;
+        }
+
+        .lightbox.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .lightbox-content {
+            max-width: 1200px;
+            width: 100%;
+            max-height: 85vh;
+            position: relative;
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid var(--primary-orange);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-image {
+            width: 100%;
+            height: auto;
+            max-height: 80vh;
+            object-fit: contain;
+            display: block;
+            background: var(--dark-bg);
+        }
+
+        .lightbox-video {
+            width: 100%;
+            max-height: 80vh;
+            display: block;
+            background: #000;
+        }
+
+        .lightbox-info {
+            padding: 20px 30px;
+            background: var(--card-bg);
+            border-top: 2px solid var(--primary-orange);
+        }
+
+        .lightbox-info h3 {
+            color: var(--primary-orange);
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .lightbox-info p {
+            color: var(--text-gray);
+            font-size: 1rem;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-orange);
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+            color: var(--dark-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-close:hover {
+            background: var(--sunset-pink);
+            transform: rotate(90deg);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(26, 26, 26, 0.8);
+            border: 2px solid var(--primary-orange);
+            color: var(--primary-orange);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-nav:hover {
+            background: var(--primary-orange);
+            color: var(--dark-bg);
+        }
+
+        .lightbox-prev { left: 20px; }
+        .lightbox-next { right: 20px; }
+
+        /* Footer (Identical to Home Page) */
+        footer {
+            background: var(--darker-bg);
+            padding: 40px 5%;
+            text-align: center;
+            border-top: 2px solid var(--primary-orange);
+        }
+
+        .footer-content { max-width: 1200px; margin: 0 auto; }
+
+        .footer-logo {
+            font-size: 2rem;
+            color: var(--primary-orange);
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .footer-social a {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-orange);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary-orange);
+        }
+
+        .footer-social a:hover {
+            background: var(--primary-orange);
+            color: var(--dark-bg);
+            transform: translateY(-5px);
+        }
+
+        .footer-text {
+            color: var(--text-gray);
+            margin-top: 20px;
+            font-size: 0.95rem;
+        }
+
+        /* Scroll to Top */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-orange);
+            color: var(--dark-bg);
+            border: none;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 5px 20px rgba(212, 165, 116, 0.4);
+        }
+
+        .scroll-top.visible { opacity: 1; visibility: visible; }
+        .scroll-top:hover { background: var(--sunset-pink); transform: translateY(-5px); }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .projects-hero h1 { font-size: 2.8rem; }
+            .projects-hero p { font-size: 1.1rem; }
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                flex-direction: column;
+                background: rgba(26, 26, 26, 0.98);
+                padding: 20px;
+                border-top: 2px solid var(--primary-orange);
+                gap: 20px;
+                text-align: center;
+                z-index: 999;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            }
+            
+            .nav-links.active {
+                display: flex;
+                animation: slideDown 0.3s ease forwards;
+            }
+            
+            @keyframes slideDown {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+
+            .mobile-menu { display: block; }
+            .filter-container { top: 75px; }
+            .lightbox-nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-drafting-compass"></i>
+            <span>EW</span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="projects.html" class="active">Projects</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <div class="mobile-menu" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <!-- Projects Hero -->
+    <section class="projects-hero">
+        <h1>Our Portfolio</h1>
+        <p>Explore a curated collection of architectural designs, 3D visualizations, technical drawings, and animated walkthroughs crafted by Edwin Wanyoike.</p>
+    </section>
+
+    <!-- Filter Buttons -->
+    <div class="filter-container">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="residential">Residential</button>
+        <button class="filter-btn" data-filter="commercial">Commercial</button>
+        <button class="filter-btn" data-filter="render">3D Renders</button>
+        <button class="filter-btn" data-filter="drawing">Drawings</button>
+        <button class="filter-btn" data-filter="video">Videos</button>
+    </div>
+
+    <!-- Gallery Grid -->
+    <section class="gallery-section">
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Items will be generated dynamically or placed here. I'll add static examples. -->
+            
+            <!-- Residential Render -->
+            <div class="gallery-item" data-category="residential render" data-type="image" data-src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200" data-title="Modern Luxury Villa" data-date="April 2026">
+                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=400&fit=crop" alt="Modern Villa" class="gallery-image">
+                <div class="gallery-overlay">
+                    <div class="gallery-type"><i class="fas fa-home"></i> Residential • 3D Render</div>
+                    <h3 class="gallery-title">Modern Luxury Villa</h3>
+                    <span class="gallery-date">April 2026</span>
+                </div>
+            </div>
+
+            <!-- Video Project -->
+            <div class="gallery-item" data-category="residential video" data-type="video" data-src="path/to/your-video1.mp4" data-title="Sunset View Residence Walkthrough" data-date="April 2026">
+                <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600&h=400&fit=crop" alt="Sunset House" class="gallery-image">
+                <div class="play-icon"><i class="fas fa-play"></i></div>
+                <div class="gallery-overlay">
+                    <div class="gallery-type"><i class="fas fa-video"></i> Residential • Animation</div>
+                    <h3 class="gallery-title">Sunset View Residence</h3>
+                    <span class="gallery-date">April 2026</span>
+                </div>
+            </div>
+
+            <!-- Drawing -->
+            <div class="gallery-item" data-category="commercial drawing" data-type="image" data-src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200" data-title="Commercial Complex Blueprint" data-date="March 2026">
+                <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&h=400&fit=crop" alt="Blueprint" class="gallery-image">
+                <div class="gallery-overlay">
+                    <div class="gallery-type"><i class="fas fa-pencil-ruler"></i> Commercial • Technical Drawing</div>
+                    <h3 class="gallery-title">Commercial Complex Blueprint</h3>
+                    <span class="gallery-date">March 2026</span>
+                </div>
+            </div>
+
+            <!-- Residential Render 2 -->
+            <div class="gallery-item" data-category="residential render" data-type="image" data-src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200" data-title="Contemporary Family Home" data-date="April 2026">
+                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&h=400&fit=crop" alt="Contemporary Home" class="gallery-image">
+                <div class="gallery-overlay">
+                    <div class="gallery-type"><i class="fas fa-home"></i> Residential • Exterior</div>
+                    <h3 class="gallery-title">Contemporary Family Home</h3>
+                    <span class="gallery-date">April 2026</span>
+                </div>
+            </div>
+
+            <!-- Video 2 -->
+            <div class="gallery-item" data-category="residential video" data-type="video" data-src="path/to/your-video2.mp4" data-title="Coastal Villa Animation" data-date="March 2026">
+                <img src="https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=600&h=400&fit=crop" alt="Coastal Villa" class="gallery-image">
+                <div class="play-icon"><i class="fas fa-play"></i></div>
+                <div class="gallery-overlay">
+                    <div class="gallery-type"><i class="fas fa-video"></i> Residential • Full Animation</div>
+                    <h3 class="gallery-title">Coastal Villa Project</h3>
+                    <span class="gallery-date">March 2026</span>
+                </div>
+            </div>
+
+            <!-- Commercial Render -->
+            <div class="gallery-item" data-category="commercial render" data-type="image" data-src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200" data-title="Urban Office Tower" data-date="February 2026">
+                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop" alt="Office Tower" class="gallery-image">
+                <div class="gallery-overlay">
+                    <div class="gallery-type"><i class="fas fa-building"></i> Commercial • 3D Render</div>
+                    <h3 class="gallery-title">Urban Office Tower</h3>
+                    <span class="gallery-date">February 2026</span>
+                </div>
+            </div>
+
+            <!-- Drawing 2 -->
+            <div class="gallery-item" data-category="residential drawing" data-type="image" data-src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1200" data-title="Elevation & Floor Plans" data-date="January 2026">
+                <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&h=400&fit=crop" alt="Floor Plans" class="gallery-image">
+                <div class="gallery-overlay">
+                    <div class="gallery-type"><i class="fas fa-drafting-compass"></i> Residential • CAD Drawings</div>
+                    <h3 class="gallery-title">Elevation & Floor Plans</h3>
+                    <span class="gallery-date">January 2026</span>
+                </div>
+            </div>
+
+            <!-- Residential Render 3 -->
+            <div class="gallery-item" data-category="residential render" data-type="image" data-src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200" data-title="Modern Estate Design" data-date="April 2026">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=400&fit=crop" alt="Modern Estate" class="gallery-image">
+                <div class="gallery-overlay">
+                    <div class="gallery-type"><i class="fas fa-home"></i> Residential • Landscape Integration</div>
+                    <h3 class="gallery-title">Modern Estate Design</h3>
+                    <span class="gallery-date">April 2026</span>
+                </div>
+            </div>
+
+            <!-- Video 3 -->
+            <div class="gallery-item" data-category="commercial video" data-type="video" data-src="path/to/your-video3.mp4" data-title="Mixed-Use Development Tour" data-date="December 2025">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=400&fit=crop" alt="Mixed Use" class="gallery-image">
+                <div class="play-icon"><i class="fas fa-play"></i></div>
+                <div class="gallery-overlay">
+                    <div class="gallery-type"><i class="fas fa-video"></i> Commercial • Walkthrough</div>
+                    <h3 class="gallery-title">Mixed-Use Development</h3>
+                    <span class="gallery-date">December 2025</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose"><i class="fas fa-times"></i></button>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev"><i class="fas fa-chevron-left"></i></button>
+        <button class="lightbox-nav lightbox-next" id="lightboxNext"><i class="fas fa-chevron-right"></i></button>
+        
+        <div class="lightbox-content" id="lightboxContent">
+            <img src="" alt="Project" class="lightbox-image" id="lightboxImage">
+            <video src="" controls class="lightbox-video" id="lightboxVideo" style="display: none;"></video>
+            <div class="lightbox-info">
+                <h3 id="lightboxTitle">Project Title</h3>
+                <p id="lightboxDate">Date</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo"><i class="fas fa-drafting-compass"></i><span>Edwin Wanyoike</span></div>
+            <div class="footer-social">
+                <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            </div>
+            <p class="footer-text">
+                &copy; <span id="year"></span> Edwin Wanyoike. All rights reserved. | Designed with <i class="fas fa-heart" style="color: var(--primary-orange);"></i> for Architecture
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <button class="scroll-top" id="scrollTop"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Navbar scroll effect & scroll-to-top
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            const scrollTop = document.getElementById('scrollTop');
+            
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(26, 26, 26, 0.98)';
+                navbar.style.boxShadow = '0 5px 20px rgba(0,0,0,0.3)';
+                scrollTop.classList.add('visible');
+            } else {
+                navbar.style.background = 'rgba(26, 26, 26, 0.95)';
+                navbar.style.boxShadow = 'none';
+                scrollTop.classList.remove('visible');
+            }
+        });
+
+        document.getElementById('scrollTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // FIXED MOBILE MENU (Same logic as home page)
+        const navLinks = document.getElementById('navLinks');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const menuIcon = mobileMenuBtn.querySelector('i');
+
+        function toggleMenu() {
+            navLinks.classList.toggle('active');
+            menuIcon.classList.toggle('fa-bars');
+            menuIcon.classList.toggle('fa-times');
+        }
+
+        function closeMenu() {
+            navLinks.classList.remove('active');
+            menuIcon.classList.add('fa-bars');
+            menuIcon.classList.remove('fa-times');
+        }
+
+        mobileMenuBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
+        document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', closeMenu));
+        document.addEventListener('click', (e) => {
+            if (!navLinks.contains(e.target) && !mobileMenuBtn.contains(e.target)) closeMenu();
+        });
+
+        // FILTER FUNCTIONALITY
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                galleryItems.forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-category').includes(filterValue)) {
+                        item.classList.remove('hidden');
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // LIGHTBOX FUNCTIONALITY
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const lightboxVideo = document.getElementById('lightboxVideo');
+        const lightboxTitle = document.getElementById('lightboxTitle');
+        const lightboxDate = document.getElementById('lightboxDate');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const lightboxPrev = document.getElementById('lightboxPrev');
+        const lightboxNext = document.getElementById('lightboxNext');
+
+        let currentIndex = 0;
+        let visibleItems = [...galleryItems]; // Will update on filter
+
+        function updateVisibleItems() {
+            visibleItems = [...galleryItems].filter(item => !item.classList.contains('hidden'));
+        }
+
+        function openLightbox(index) {
+            updateVisibleItems();
+            currentIndex = index;
+            showItem(currentIndex);
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function showItem(index) {
+            if (index < 0) index = visibleItems.length - 1;
+            if (index >= visibleItems.length) index = 0;
+            
+            const item = visibleItems[index];
+            const type = item.getAttribute('data-type');
+            const src = item.getAttribute('data-src');
+            const title = item.getAttribute('data-title');
+            const date = item.getAttribute('data-date');
+
+            lightboxTitle.textContent = title;
+            lightboxDate.textContent = date;
+
+            if (type === 'video') {
+                lightboxImage.style.display = 'none';
+                lightboxVideo.style.display = 'block';
+                lightboxVideo.src = src;
+                lightboxVideo.play();
+            } else {
+                lightboxVideo.style.display = 'none';
+                lightboxVideo.pause();
+                lightboxVideo.src = '';
+                lightboxImage.style.display = 'block';
+                lightboxImage.src = src;
+            }
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            lightboxVideo.pause();
+            lightboxVideo.src = '';
+        }
+
+        // Attach click events to gallery items
+        galleryItems.forEach((item, idx) => {
+            item.addEventListener('click', () => {
+                updateVisibleItems();
+                const visibleIndex = visibleItems.indexOf(item);
+                openLightbox(visibleIndex >= 0 ? visibleIndex : idx);
+            });
+        });
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') showItem(currentIndex - 1);
+            if (e.key === 'ArrowRight') showItem(currentIndex + 1);
+        });
+
+        lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showItem(currentIndex - 1); });
+        lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showItem(currentIndex + 1); });
+    </script>
+</body>
+</html>
