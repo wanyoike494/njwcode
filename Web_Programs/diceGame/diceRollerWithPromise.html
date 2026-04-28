@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roll Dice</title>
+    <style>
+        #container{
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+
+        }
+        button{
+            font-size: 1.5rem;
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: none;
+            background-color: hsl(210, 100%, 50%);
+            color: white;
+            font-weight: bold;
+             cursor: pointer;
+
+        }
+        button:hover{
+            background-color: hsl(210, 100%, 60%);
+        }
+        button:active{
+            background-color: hsl(210, 100%, 70%);
+        }
+        input{
+            font-size: 2rem;
+            width: 150px;
+            text-align: center;
+            font-weight: bold;
+        }
+        #diceImages img {
+            width: 100px;  /* Adjust this value to make them smaller or larger */
+            margin: 5px; /* Adds a little space between each die */
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Dice Roller</h1>
+        <label># of Dice</label>
+        <input type="number" value="1" min="1" placeholder="Input Number" id="numOfDice">
+        <button onclick="rollDice()">Roll Dice</button>
+        <div id="diceResult"></div>
+        <div id="diceImages"></div>
+
+
+    </div>
+    <script>
+        function rollDice(){
+            const numOfDice = document.getElementById('numOfDice').value;
+            const diceResult = document.getElementById('diceResult');
+            const diceImages = document.getElementById('diceImages');
+            
+            // 1. Show a "rolling" message while we wait
+            diceResult.textContent = "Rolling...";
+            diceImages.innerHTML = "";
+
+            // 2. Create the Promise (simulates the delay of the dice rolling)
+            const shakeDice = new Promise((resolve) => {
+                setTimeout(() => {
+                    const results = [];
+                    for (let i = 0; i < numOfDice; i++) {
+                        const value = Math.floor(Math.random() * 6) + 1;
+                        results.push(value);
+                    }
+                    resolve(results); // Send the results back when finished
+                }, 500); // 500ms delay (half a second)
+            });
+
+            // 3. Handle the Promise result
+            shakeDice.then((values) => {
+                const images = values.map(value => `<img src='diceImages/${value}.png'>`);
+                
+                diceResult.textContent = `dice: ${values.join(', ')}`;
+                diceImages.innerHTML = images.join('');
+            });
+        }
+
+            
+        
+    </script>
+</body>
+</html>
