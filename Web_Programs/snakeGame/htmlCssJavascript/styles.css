@@ -66,10 +66,20 @@ body{
         padding: 15px 27px;
     }
     .controls{
-        display: flex;
+        /* display: flex; we change this so as to have a better buttons layout*/
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        gap: 1px;
+        justify-items: center;
+        align-items: center;
     }
     .controls i{
         padding: 15px;
         font-size: 1rem;
     }
+    .controls i:nth-child(1){ grid-area: 2 / 1; } /* left */
+    .controls i:nth-child(2){ grid-area: 1 / 2; } /* up */
+    .controls i:nth-child(3){ grid-area: 2 / 3; } /* right */
+    .controls i:nth-child(4){ grid-area: 3 / 2; } /* down */
 }
